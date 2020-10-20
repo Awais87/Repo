@@ -1,0 +1,34 @@
+About Microsoft Teams governance, you probably need/want to prevent normal users from new Teams creation.
+
+This can be achieved only with a PowerShell script because, right now, standard Office 365 UI do not give us this option.
+
+Important: in order to be able to execute the script you need the Preview of AzureAD module for PowerShell. This is called "AzureADPreview".
+
+If you already have installed production AzureAD module, you need to uninstall it and then install new preview version of the same module.
+
+Uninstall-Module AzureAD
+Install-Module AzureADPreview
+
+Once you have this module correctly installed, all you need is to execute this script.
+Change the $groupName variable to fit your environment.
+This AzureAD Security Group will be the only that later can create Teams.
+Keep in mind that also Global Admin members can create Microsoft Teams.
+
+#Connect to AAD
+$AzureAdCred = Get-Credential 
+Connect-AzureAD -Credential $AzureAdCred
+
+#Get reference to your AAD Group
+$groupName = "UsersCanCreateTeams"
+Get-AzureADGroup -SearchString $groupName 
+
+#Disable Group Creation (on which a Team rely)
+$Template = Get-AzureADDirectorySettingTemplate | where {$_.DisplayName -eq 'Group.Unified'}
+$Setting = $Template.CreateDirectorySetting()
+New-AzureADDirectorySetting -DirectorySetting $Setting
+$Setting = Get-AzureADDirectorySetting -Id (Get-AzureADDirectorySetting | where -Property DisplayName -Value "Group.Unified" -EQ).id
+$Setting["EnableGroupCreation"] = $False
+
+#Enable your AAD Group to group Creation
+$Setting["GroupCreationAllowedGroupId"] = (Get-AzureADGroup -SearchString $groupName).objectid
+Set-AzureADDirectorySetting -Id (Get-AzureADDirectorySetting | where -Property DisplayName -Value "Group.Unified" -EQ).id -DirectorySetting $Setting
