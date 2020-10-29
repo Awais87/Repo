@@ -1,0 +1,47 @@
+If you are tired of find and replace the values time and time again, the following VBA code can help you to replace multiple values with your needed texts at once.
+
+1. Please create your conditions that you want to use which contain the original values and new values.
+
+
+
+2. Then hold down the ALT + F11 keys to open the Microsoft Visual Basic for Applications window.
+
+
+
+3. Click Insert > Module, paste the following code in the Module window.
+
+VBA code: Find and replace multiple values at once
+
+Sub MultiFindNReplace() 'Updateby Extendoffice Dim Rng As Range
+Dim InputRng As Range, ReplaceRng As Range
+
+xTitleId = "CommunicationSquare Excel Multi Values Replacement"
+
+Set InputRng = Application.Selection
+
+Set InputRng = Application.InputBox("Cells to Replace - Range ", xTitleId, InputRng.Address, Type:=8)
+
+Set ReplaceRng = Application.InputBox("Cells Replaced by - Range :", xTitleId, Type:=8)
+
+Application.ScreenUpdating = False
+
+For Each Rng In ReplaceRng.Columns(1).Cells
+
+InputRng.Replace what:=Rng.Value, replacement:=Rng.Offset(0, 1).Value
+
+Next
+
+Application.ScreenUpdating = True
+
+End Sub
+
+4. Then pressF5 key to run this code, in the popped-out prompt box, please specify the data range that you want to be replaced the values with new values.
+
+
+
+5. Click OK, and another prompt box is displayed to remind you select the criteria which you are created in step 1. See screenshot:
+
+
+
+6. Then click OK, all the specific values have been replaced with the new values as you need immediately.
+
