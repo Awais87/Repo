@@ -1,0 +1,17 @@
+Description:
+This script is used to add members and owners in Teams
+
+The following columns are required in the CSV:
+
+-GroupID: GroupID of the Team
+
+-User: Email of the user
+
+-Role: Owner or members 
+
+Script:
+Install-Module -Name MicrosoftTeams
+
+Connect-MicrosoftTeams
+
+Import-Csv -Path " C:\Users\Awais\OneDrive - Communication Square\Desktop\teams.csv" | foreach{Add-TeamUser -GroupId $_.GROUPID -user $_.upn -Role $_.Role}
