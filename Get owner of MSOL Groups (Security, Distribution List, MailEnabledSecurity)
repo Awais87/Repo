@@ -1,0 +1,23 @@
+This script is used to get owner (Managed by property) of the Office 365 Groups.
+
+-You can change the value of Grouptype
+
+-Security 
+
+-Distribution List
+
+-MailEnabledSecurity
+
+
+
+
+Script:
+Install-Module -Name AzureAD
+
+Connect-AzureAD
+
+Install-Module -Name Msonline
+
+Connect-MsolService
+
+Get-MsolGroup -GroupType Security | select DisplayName,@{n="ManagedBy";e={(Get-MsolUser -ObjectId (Get-MsolGroup -ObjectId $_.ObjectId).ManagedBy).UserPrincipalName}}
