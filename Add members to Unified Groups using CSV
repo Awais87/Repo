@@ -1,0 +1,25 @@
+Description:
+This script is used to add members to the unified groups using CSV File.
+
+The CSV file should contain the following columns:
+
+-Identity:  Identity parameter specifies the Microsoft 365 Group that you want to modify. (Name, DN, email any one of these which should be unique)
+
+-LinkType: The LinkType parameter specifies the Microsoft 365 Group property that you want to modify. (Member, Owner, Subscriber)
+
+-Links: The Links parameter specifies the recipients to add to the Microsoft 365 Group. (UPN of the user)
+
+Script:
+Install-Module -Name AzureAD
+
+Connect-AzureAD
+
+Install-Module -Name Msonline
+
+Connect-MsolService
+
+Import-Csv -Path "C:\Users\tv\Desktop\office365.csv" | foreach {
+
+Add-UnifiedGroupLinks –Identity $._name  –LinkType Members  –Links $_.members
+
+}
