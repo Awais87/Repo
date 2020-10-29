@@ -1,0 +1,31 @@
+Description:
+This script is used to create  bulk user in office 365 using a CSV file and Powershell
+
+The following columns are required in the CSV:
+
+-DisplayName: Name of the User
+
+-FirstName: First name of the user
+
+-LastName: Last name of the user
+
+-UserprincipalName: Required Email address of the user
+
+-UsageLocation: Location of the User
+
+-LicenseAssignment: SkuID of the required license
+
+-Password: Password of the user
+
+-City: City of the user 
+
+-Title: Job Title
+
+-Office: Office
+
+-Department: Department
+
+Script:
+Import-Csv -Path "C:\Users\tv\Desktop\Faculty.csv" | foreach {
+
+New-MsolUser -DisplayName $_.DisplayName -FirstName $_.FirstName -LastName $_.LastName -UserPrincipalName $_.UserPrincipalName -UsageLocation "PK" -LicenseAssignment $_.Skuid -Password $_.Password -City $_.Campus -Title $_.JobProfile -Office $_.Office -Department $_.Department}
