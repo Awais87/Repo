@@ -1,0 +1,7 @@
+Description:
+This script is used to get CSV file which contain all the user in the On-Prem AD and their Manager
+
+Script:
+import-module activedirectory 
+
+Get-ADUser -Filter * -Properties *| Select name, @{n='Manager';e={(Get-ADUser $_.manager).name}} | export-csv "c:\export.csv" -NoTypeInformation
