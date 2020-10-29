@@ -1,0 +1,13 @@
+Description:
+This script is used to add new teams in Microsoft Teams using powershell and CSV file.
+
+Required Columns in CSV file:
+
+-DisplayName: Name of the Team
+
+Script:
+Install-Module -Name MicrosoftTeams
+
+Connect-MicrosoftTeams
+
+Import-Csv -Path " C:\Users\Awais\Desktop\teams.csv" | foreach{New-Team -DisplayName $_.team}
