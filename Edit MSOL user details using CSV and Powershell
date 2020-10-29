@@ -1,0 +1,30 @@
+Description:
+This script is used to edit the multiple user parameters at once using CSV file and Powershell
+
+For Example:
+A office365 tenant has 1000's of user and you need to update their usage location their title.
+
+You need to create a CSV file which contain the following columns  
+
+-UPN of the user of whom you want to edit the details
+
+-Usage Location: New usage Location
+
+-Title: New title  
+
+Script:
+Install-Module -Name Msonline
+
+Connect-MsolService
+
+Import-Csv -Path "C:\Users\Awais\Desktop\Details.csv" | foreach {
+
+$users = get-msoluser | select userprincipalname,objectid | where {-userprincipalname -like $_.UPN }
+
+Set-Msoluser  -UserPrincipalName $_.UPN -UsageLocation "IE" -Title “Driver” -ObjectId (Get-MsolUser -UserPrincipalName $_.UPN).objectid}
+
+OR
+
+If you want to edit all users
+
+Import-Csv "C:\Users\Awais\Desktop\Faculty.csv" | ForEach-Object { Set-MsolUser -userPrincipalName $_.UserPrincipalName -Title $_.Jobprofile}
