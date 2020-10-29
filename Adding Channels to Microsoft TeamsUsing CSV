@@ -1,0 +1,24 @@
+Description:
+This script is used to add multiple Channels in the Teams at once.
+
+For Example: 
+You need to add multiple Channels in Marketing Team
+
+To achieve this you need to create a CSV file which contain 2 columns
+
+-GroupID: This is the ID of the Team where you want to add channels
+
+-DisplayName: This is the name of the channel i.e. Budget
+
+Script:
+Install-Module -Name MicrosoftTeams
+
+Connect-MicrosoftTeams
+
+Import-Csv -Path "C:\Users\TV\Desktop\Channels.csv" | foreach
+
+{
+
+New-TeamChannel -GroupId $_.GroupID -DisplayName $_.DisplayName
+
+}
