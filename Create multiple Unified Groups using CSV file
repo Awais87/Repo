@@ -1,0 +1,27 @@
+Description:
+This script is used to create unified groups(For Exchange) using a CSV file
+
+This script use CSV file which sould contain the following columns:
+
+-DisplayName: Name of the unified group
+
+-EmailAddresses: Emails of the Unified Groups
+
+-AccessType: Public or Private
+
+-Owner: Owner of the Unified Group
+
+-Members: Member of the Unified group (please see other article on our how to's section which explains how to add members in already present unified groups) 
+
+Script:
+Install-Module -Name AzureAD
+
+Connect-AzureAD
+
+Install-Module -Name Msonline
+
+Connect-MsolService
+
+Import-Csv -Path "C:\Users\tv\Desktop\office365.csv" | foreach {
+
+New-UnifiedGroup -DisplayName $_.Name -EmailAddresses $_.UPN  -AccessType $_.Type -Owner $_.Owner -Members $_.Members}
